@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "server": "json-server --watch data/db.json --host 192.168.33.3 -p 5000",
+    "start": "expo start -c",
+    "server": "json-server --watch data/db.json --host 192.168.33.2 -p 5000",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"

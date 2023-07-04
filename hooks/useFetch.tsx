@@ -25,7 +25,36 @@ const useFetch = () => {
     return response;
   };
 
-  return { registerUser, getAllUsers };
+  const updateUser = async (
+    id: number,
+    {
+      name,
+      age,
+      gender,
+      height,
+      weight,
+    }: {
+      name?: string;
+      age?: number;
+      gender?: string;
+      height?: number;
+      weight?: number;
+    }
+  ) => {
+    await fetch(`${DBSERVER}users/${id}`, {
+      method: "PATCH",
+      headers: headers,
+      body: JSON.stringify({
+        name,
+        age,
+        gender,
+        height,
+        weight,
+      }),
+    });
+  };
+
+  return { registerUser, getAllUsers, updateUser };
 };
 
 export default useFetch;

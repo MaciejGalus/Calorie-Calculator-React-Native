@@ -1,26 +1,39 @@
 import { createContext, useState } from "react";
 
 interface UserData {
-  user: string;
-  setUser: React.Dispatch<React.SetStateAction<string>>;
-  // password: string;
-  // setPassword: React.Dispatch<React.SetStateAction<string>>;
+  user: User;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
+}
+
+interface User {
+  id: number;
+  name: string;
+  age: number;
+  gender: string;
+  height: number;
+  weight: number;
 }
 
 interface Props {
   children: React.ReactNode;
 }
 
+const initialUser: User = {
+  id: 0,
+  name: "",
+  age: 0,
+  gender: "",
+  height: 0,
+  weight: 0,
+};
+
 export const UserContext = createContext<UserData>({
-  user: "",
+  user: initialUser,
   setUser: () => {},
-  // password: "",
-  // setPassword: () => {},
 });
 
 export const UserProvider: React.FC<Props> = ({ children }) => {
-  const [user, setUser] = useState<string>("");
-  // const [password, setPassword] = useState<string>("");
+  const [user, setUser] = useState<User>(initialUser);
 
   const value = { user, setUser };
 

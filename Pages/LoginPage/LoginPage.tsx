@@ -9,13 +9,13 @@ import {
 } from "react-native";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../Context/userContext";
-import { passwordValidation } from "../../constants";
+import { Routes, passwordValidation } from "../../constants";
 import useFetch from "../../hooks/useFetch";
 import { emptyName, emptyPassword, wrongPassword } from "../../constants";
 import VisibilityPasswordIcon from "../../Components/VisibilityPasswordIcon/VisibilityPasswordIcon";
 
 function LoginPage({ navigation }: any) {
-  const { setUser } = useContext(UserContext);
+  const { setUser, user } = useContext(UserContext);
   const { getAllUsers, registerUser } = useFetch();
   const [myName, setMyName] = useState<string>("");
   const [myPassword, setMyPassword] = useState<string>("");
@@ -23,32 +23,25 @@ function LoginPage({ navigation }: any) {
   const [passwordAlert, setPasswordAlert] = useState<string>("");
   const [hidePassword, setHidePassword] = useState<boolean>(true);
   const [signUpMenu, setSignUpMenu] = useState(false);
-  const [allUsers, setAllUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState<
+    { name: string; password: string; id: number }[]
+  >([]);
   const [updateAllUsers, setUpdateAllUsers] = useState<boolean>(false);
-
-  const onSignupSubmit = () => {
-    setUpdateAllUsers(!updateAllUsers);
-    if (myName.length && myPassword.match(passwordValidation)) {
-      registerUser(myName.trim(), myPassword.trim());
-      cleanForms();
-    } else {
-      if (!myName.length) {
-        setNameAlert(emptyName);
-      }
-
-      if (!myPassword.length) {
-        setPasswordAlert(emptyPassword);
-      } else if (!myPassword.match(passwordValidation)) {
-        setPasswordAlert(wrongPassword);
-      }
-    }
-  };
 
   useEffect(() => {
     // w rzeczywistosci powinmien pojsc post na backend z id uzytkownika i tokenem zeby spr czy mamy tam takiego
     getAllUsers(setAllUsers);
   }, [updateAllUsers]);
   console.log(allUsers);
+
+  const displayValidation = () => {
+    if (!myName.length) setNameAlert(emptyName);
+    if (!myPassword.length) {
+      return setPasswordAlert(emptyPassword);
+    } else if (signUpMenu && !myPassword.match(passwordValidation)) {
+      setPasswordAlert(wrongPassword);
+    }
+  };
 
   const cleanForms = () => {
     setMyName("");
@@ -57,18 +50,27 @@ function LoginPage({ navigation }: any) {
     setPasswordAlert("");
   };
 
-  const onLoginSubmit = () => {
-    if (!myName.length) {
-      setNameAlert(emptyName);
-    }
-    if (!myPassword.length) {
-      setPasswordAlert(emptyPassword);
-    }
-
+  const onSignupSubmit = () => {
+    setUpdateAllUsers(!updateAllUsers);
     if (myName.length && myPassword.match(passwordValidation)) {
-      setUser(myName.trim());
+      registerUser(myName.trim(), myPassword.trim());
       cleanForms();
-      navigation.navigate("secondNavi" as never);
+    } else {
+      displayValidation();
+    }
+  };
+
+  const onLoginSubmit = () => {
+    const findUser = allUsers.find((user) => user?.name === myName);
+    // console.log("findUser", findUser);
+    if (findUser?.name === myName && findUser.password === myPassword) {
+      setUser((prevUser) => {
+        return { ...prevUser, name: myName.trim(), id: findUser.id };
+      });
+      cleanForms();
+      navigation.navigate(Routes.FillYourProfile as never);
+    } else {
+      displayValidation();
     }
   };
 
@@ -77,7 +79,8 @@ function LoginPage({ navigation }: any) {
   );
 
   const displayPasswordAlert =
-    !myPassword.length || !myPassword.match(passwordValidation) ? (
+    !myPassword.length ||
+    (signUpMenu && !myPassword.match(passwordValidation)) ? (
       <Text style={styles.alertButton}>{passwordAlert}</Text>
     ) : null;
 
