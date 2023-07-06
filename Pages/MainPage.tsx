@@ -3,7 +3,7 @@ import BottomTabsNavigation from "../Navigation/BottomTabsNavigations/BottomTabs
 import { UserContext } from "../Context/userContext";
 import { NavigationContainer } from "@react-navigation/native";
 import LoginPage from "./LoginPage/LoginPage";
-import { Routes } from "../constants";
+import { Routes, materialPurpleColor } from "../constants";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import FillProfilePage from "./FillProfilePage/FillProfilePage";
 
@@ -29,6 +29,10 @@ const MainPage = () => {
           />
           <Stack.Screen
             options={{
+              // headerStyle: {
+              //   backgroundColor: materialPurpleColor,
+              // },
+              // headerTintColor: "white",
               headerShown: false,
             }}
             name={Routes.MainMenu}

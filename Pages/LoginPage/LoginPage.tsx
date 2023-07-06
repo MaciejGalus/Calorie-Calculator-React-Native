@@ -1,11 +1,16 @@
 import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../Context/userContext";
-import { Routes, passwordValidation } from "../../constants";
+import {
+  Routes,
+  materialPurpleColor,
+  passwordValidation,
+} from "../../constants";
 import useFetch from "../../hooks/useFetch";
 import { emptyName, emptyPassword, wrongPassword } from "../../constants";
 import VisibilityPasswordIcon from "../../Components/VisibilityPasswordIcon/VisibilityPasswordIcon";
 import { Button, Text, TextInput } from "@react-native-material/core";
+import { styles } from "../../styles";
 
 function LoginPage({ navigation }: any) {
   const { setUser, user, setIsLogged } = useContext(UserContext);
@@ -80,6 +85,7 @@ function LoginPage({ navigation }: any) {
       </Text>
     ) : null;
 
+  ////////////osobny komponent -------------------------------------------
   const loginFooter = (
     <View
       style={{
@@ -94,13 +100,14 @@ function LoginPage({ navigation }: any) {
           cleanForms();
         }}
       >
-        <Text style={{ fontWeight: "bold", color: "rgb(132, 55, 242)" }}>
+        <Text style={{ fontWeight: "bold", color: materialPurpleColor }}>
           Sign up
         </Text>
       </TouchableOpacity>
     </View>
   );
 
+  /////OSOBNY KOMPONENT ------------------------------------------------
   const signUpFooter = (
     <View>
       <TouchableOpacity
@@ -114,7 +121,7 @@ function LoginPage({ navigation }: any) {
             fontWeight: "bold",
             marginTop: 20,
             alignSelf: "center",
-            color: "rgb(132, 55, 242)",
+            color: materialPurpleColor,
           }}
         >
           Back to Login
@@ -138,6 +145,7 @@ function LoginPage({ navigation }: any) {
       </View>
       <View style={styles.inputContainer}>
         <TextInput
+          variant="standard"
           value={myName}
           placeholder="Your name"
           onChangeText={(text) => setMyName(text)}
@@ -145,6 +153,7 @@ function LoginPage({ navigation }: any) {
         {displayNameAlert}
         <View style={{ flexDirection: "row", flex: 1 }}>
           <TextInput
+            variant="standard"
             secureTextEntry={hidePassword}
             value={myPassword}
             placeholder="Password"
@@ -171,24 +180,5 @@ function LoginPage({ navigation }: any) {
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  centerComponent: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "stretch",
-    justifyContent: "center",
-    width: "80%",
-    alignSelf: "center",
-    height: "100%",
-  },
-  inputContainer: {
-    flexDirection: "column",
-    height: "50%",
-    marginTop: 30,
-    justifyContent: "center",
-    alignSelf: "center",
-  },
-});
 
 export default LoginPage;

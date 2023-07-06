@@ -11,6 +11,7 @@ import { Gender, Routes } from "../../constants";
 import useFetch from "../../hooks/useFetch";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Text, TextInput, AppBar } from "@react-native-material/core";
+import { styles } from "../../styles";
 
 const FillProfilePage = () => {
   const navigation = useNavigation();
@@ -74,6 +75,7 @@ const FillProfilePage = () => {
           />
         </View>
         <TextInput
+          variant="outlined"
           value={age}
           keyboardType="numeric"
           placeholder="Your age"
@@ -83,6 +85,7 @@ const FillProfilePage = () => {
         />
 
         <TextInput
+          variant="outlined"
           value={height}
           keyboardType="numeric"
           placeholder="Your height (cm)"
@@ -93,6 +96,7 @@ const FillProfilePage = () => {
         />
 
         <TextInput
+          variant="outlined"
           value={weight}
           keyboardType="numeric"
           placeholder="Your weight (kg)"
@@ -110,23 +114,5 @@ const FillProfilePage = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  centerComponent: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "stretch",
-    justifyContent: "center",
-    width: "80%",
-    alignSelf: "center",
-    // height: "40%",
-  },
-  inputContainer: {
-    flexDirection: "column",
-    height: "60%",
-    marginTop: 30,
-    justifyContent: "center",
-  },
-});
 
 export default FillProfilePage;

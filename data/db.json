@@ -4,19 +4,10 @@
       "name": "mac",
       "password": "123Mac",
       "id": 1,
-      "age": 6,
+      "age": 3,
       "gender": "male",
-      "height": 6,
-      "weight": 9
-    },
-    {
-      "name": "galus",
-      "password": "123Gal",
-      "id": 2,
-      "age": 12,
-      "gender": "male",
-      "height": 23,
-      "weight": 34
+      "height": 3,
+      "weight": 3
     }
   ]
 }

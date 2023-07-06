@@ -18,3 +18,11 @@ export enum Gender {
   male = "male",
   female = "female",
 }
+
+export enum WeightTarget {
+  Gain = "gain your weight",
+  Lose = "lose your weight",
+  Keep = "keep your weight",
+}
+
+export const materialPurpleColor = "rgb(98, 0, 238)";
