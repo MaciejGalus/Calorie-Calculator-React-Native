@@ -1,5 +1,5 @@
 import { TouchableOpacity, Image, StyleSheet } from "react-native";
-import { hidePasswordIcon, showPasswordIcon } from "../../constants";
+import Icon from "react-native-vector-icons/Entypo";
 
 type VisibilityIconProps = {
   onPressToggler: () => void;
@@ -14,10 +14,11 @@ const VisibilityPasswordIcon: React.FC<VisibilityIconProps> = ({
 }) => {
   return (
     <TouchableOpacity onPress={onPressToggler} disabled={isDisabled}>
-      <Image
-        style={styles.passwordIcon}
-        source={hidePassword ? hidePasswordIcon : showPasswordIcon}
-      />
+      {hidePassword ? (
+        <Icon name="eye-with-line" size={40} color="darkgray" />
+      ) : (
+        <Icon name="eye" size={40} color="darkgray" />
+      )}
     </TouchableOpacity>
   );
 };

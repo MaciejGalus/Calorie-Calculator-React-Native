@@ -12,9 +12,7 @@ const useFetch = () => {
       method: "POST",
       headers: headers,
       body: JSON.stringify({ name: userName, password: userPassword }),
-    })
-      .then((res) => console.log("response", res))
-      .catch((err) => console.log("error", err));
+    }).catch((err) => console.error("error", err));
   };
 
   //get all users
@@ -24,7 +22,7 @@ const useFetch = () => {
       .then((data) => myState(data));
     return response;
   };
-
+  //update user
   const updateUser = async (
     id: number,
     {

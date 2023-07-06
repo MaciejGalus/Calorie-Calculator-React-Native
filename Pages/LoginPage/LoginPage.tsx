@@ -1,21 +1,14 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  TextInput,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Image, TouchableOpacity, StyleSheet } from "react-native";
 import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../Context/userContext";
 import { Routes, passwordValidation } from "../../constants";
 import useFetch from "../../hooks/useFetch";
 import { emptyName, emptyPassword, wrongPassword } from "../../constants";
 import VisibilityPasswordIcon from "../../Components/VisibilityPasswordIcon/VisibilityPasswordIcon";
+import { Button, Text, TextInput } from "@react-native-material/core";
 
 function LoginPage({ navigation }: any) {
-  const { setUser, user } = useContext(UserContext);
+  const { setUser, user, setIsLogged } = useContext(UserContext);
   const { getAllUsers, registerUser } = useFetch();
   const [myName, setMyName] = useState<string>("");
   const [myPassword, setMyPassword] = useState<string>("");
@@ -32,7 +25,6 @@ function LoginPage({ navigation }: any) {
     // w rzeczywistosci powinmien pojsc post na backend z id uzytkownika i tokenem zeby spr czy mamy tam takiego
     getAllUsers(setAllUsers);
   }, [updateAllUsers]);
-  console.log(allUsers);
 
   const displayValidation = () => {
     if (!myName.length) setNameAlert(emptyName);
@@ -62,26 +54,30 @@ function LoginPage({ navigation }: any) {
 
   const onLoginSubmit = () => {
     const findUser = allUsers.find((user) => user?.name === myName);
-    // console.log("findUser", findUser);
     if (findUser?.name === myName && findUser.password === myPassword) {
       setUser((prevUser) => {
         return { ...prevUser, name: myName.trim(), id: findUser.id };
       });
       cleanForms();
-      navigation.navigate(Routes.FillYourProfile as never);
+      setIsLogged(true);
+      // navigation.navigate(Routes.FillYourProfile as never);
     } else {
       displayValidation();
     }
   };
 
   const displayNameAlert = !myName.length && (
-    <Text style={styles.alertButton}>{nameAlert}</Text>
+    <Text variant="h5" color="red">
+      {nameAlert}
+    </Text>
   );
 
   const displayPasswordAlert =
     !myPassword.length ||
     (signUpMenu && !myPassword.match(passwordValidation)) ? (
-      <Text style={styles.alertButton}>{passwordAlert}</Text>
+      <Text variant="h5" color="red">
+        {passwordAlert}
+      </Text>
     ) : null;
 
   const loginFooter = (
@@ -98,9 +94,10 @@ function LoginPage({ navigation }: any) {
           cleanForms();
         }}
       >
-        <Text style={styles.signUpTryb}>Sign up</Text>
+        <Text style={{ fontWeight: "bold", color: "rgb(132, 55, 242)" }}>
+          Sign up
+        </Text>
       </TouchableOpacity>
-      {/* <Text>Forgott your password?</Text> */}
     </View>
   );
 
@@ -112,33 +109,47 @@ function LoginPage({ navigation }: any) {
           cleanForms();
         }}
       >
-        <Text style={{ fontWeight: "bold", marginTop: 20 }}>Back to Login</Text>
+        <Text
+          style={{
+            fontWeight: "bold",
+            marginTop: 20,
+            alignSelf: "center",
+            color: "rgb(132, 55, 242)",
+          }}
+        >
+          Back to Login
+        </Text>
       </TouchableOpacity>
     </View>
   );
 
   return (
-    <View style={styles.mainContainer}>
-      <View style={styles.centerComponent}>
+    <View style={styles.centerComponent}>
+      <View style={{ alignSelf: "center" }}>
         {signUpMenu ? (
-          <Text style={styles.loginHeader}>Sign up</Text>
+          <Text variant="h4" style={{ fontWeight: "bold" }}>
+            Sign up
+          </Text>
         ) : (
-          <Text style={styles.loginHeader}>Log in</Text>
+          <Text variant="h4" style={{ fontWeight: "bold" }}>
+            Log in
+          </Text>
         )}
+      </View>
+      <View style={styles.inputContainer}>
         <TextInput
           value={myName}
           placeholder="Your name"
           onChangeText={(text) => setMyName(text)}
-          style={styles.inputName}
         />
         {displayNameAlert}
-        <View style={styles.passwordInputContainer}>
+        <View style={{ flexDirection: "row", flex: 1 }}>
           <TextInput
             secureTextEntry={hidePassword}
             value={myPassword}
             placeholder="Password"
             onChangeText={(text) => setMyPassword(text)}
-            style={styles.inputPassword}
+            style={{ width: "90%" }}
           />
 
           <VisibilityPasswordIcon
@@ -148,49 +159,35 @@ function LoginPage({ navigation }: any) {
           />
         </View>
         {displayPasswordAlert}
-        {signUpMenu ? (
-          <Button title="SIGN UP" onPress={onSignupSubmit} />
-        ) : (
-          <Button title="LOGIN" onPress={onLoginSubmit} />
-        )}
-        {signUpMenu ? signUpFooter : loginFooter}
+        <View>
+          {signUpMenu ? (
+            <Button title="SIGN UP" onPress={onSignupSubmit} />
+          ) : (
+            <Button title="LOGIN" onPress={onLoginSubmit} />
+          )}
+          {signUpMenu ? signUpFooter : loginFooter}
+        </View>
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  signUpTryb: { color: "#1e90ff", fontWeight: "bold" },
-  loginHeader: { fontSize: 24, fontWeight: "700" },
-  mainContainer: { height: "100%", justifyContent: "center" },
   centerComponent: {
-    alignItems: "center",
-    justifyContent: "space-around",
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "stretch",
+    justifyContent: "center",
     width: "80%",
     alignSelf: "center",
+    height: "100%",
+  },
+  inputContainer: {
+    flexDirection: "column",
     height: "50%",
-  },
-  inputName: {
-    width: "100%",
-    borderColor: "darkgray",
-    borderBottomWidth: 1,
-    height: 50,
-  },
-  inputPassword: {
-    width: "90%",
-    borderColor: "darkgray",
-    borderBottomWidth: 1,
-    height: 50,
-  },
-
-  alertButton: {
-    color: "red",
-  },
-
-  passwordInputContainer: {
-    width: "100%",
-    flexDirection: "row",
-    alignItems: "center",
+    marginTop: 30,
+    justifyContent: "center",
+    alignSelf: "center",
   },
 });
 

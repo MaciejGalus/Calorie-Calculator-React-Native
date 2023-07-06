@@ -1,17 +1,19 @@
 import {
-  Text,
+  // Text,
   View,
   StyleSheet,
-  TextInput,
-  Button,
+  // TextInput,
   TouchableOpacity,
 } from "react-native";
 import { UserContext } from "../../Context/userContext";
 import { useContext, useState } from "react";
-import { Gender } from "../../constants";
+import { Gender, Routes } from "../../constants";
 import useFetch from "../../hooks/useFetch";
+import { useNavigation } from "@react-navigation/native";
+import { Button, Text, TextInput, AppBar } from "@react-native-material/core";
 
 const FillProfilePage = () => {
+  const navigation = useNavigation();
   const { updateUser } = useFetch();
   const { user, setUser } = useContext(UserContext);
   const [gender, setGender] = useState<string | "">("");
@@ -21,7 +23,6 @@ const FillProfilePage = () => {
 
   const onSubmitButton = () => {
     if (gender !== "" && age !== "" && height !== "" && weight !== "") {
-      console.log("sent");
       setUser((prevUser) => {
         return {
           ...prevUser,
@@ -38,13 +39,16 @@ const FillProfilePage = () => {
         height: +height,
         weight: +weight,
       });
+      navigation.navigate(Routes.MainMenu as never);
     }
   };
 
   return (
-    <View>
-      <View style={styles.centerComponent}>
-        <Text style={styles.welcomeText}>Cześć {user.name} !</Text>
+    <View style={styles.centerComponent}>
+      <View>
+        <Text variant="h4" style={{ fontWeight: "bold" }}>
+          Cześć {user.name} !
+        </Text>
         <Text>Fill your profile</Text>
       </View>
 
@@ -52,17 +56,22 @@ const FillProfilePage = () => {
         <View
           style={{
             flexDirection: "row",
-            width: "60%",
+            width: "80%",
             justifyContent: "space-around",
+            alignSelf: "center",
+            marginBottom: 25,
           }}
         >
-          <TouchableOpacity onPress={() => setGender(Gender.male)}>
-            <Text>Male</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => setGender(Gender.female)}>
-            <Text>Female</Text>
-          </TouchableOpacity>
+          <Button
+            title="Male"
+            color={gender === Gender.male ? "rgb(132, 55, 242)" : "lightgray"}
+            onPress={() => setGender(Gender.male)}
+          />
+          <Button
+            title="Female"
+            color={gender === Gender.female ? "rgb(132, 55, 242)" : "lightgray"}
+            onPress={() => setGender(Gender.female)}
+          />
         </View>
         <TextInput
           value={age}
@@ -71,7 +80,6 @@ const FillProfilePage = () => {
           onChangeText={(text) => {
             setAge(text);
           }}
-          style={styles.inputStyle}
         />
 
         <TextInput
@@ -81,7 +89,7 @@ const FillProfilePage = () => {
           onChangeText={(text) => {
             setHeight(text);
           }}
-          style={styles.inputStyle}
+          style={{ marginVertical: 15 }}
         />
 
         <TextInput
@@ -91,45 +99,33 @@ const FillProfilePage = () => {
           onChangeText={(text) => {
             setWeight(text);
           }}
-          style={styles.inputStyle}
         />
 
-        <Button title="Submit" onPress={onSubmitButton} />
+        <Button
+          title="Submit"
+          onPress={onSubmitButton}
+          style={{ marginTop: 20 }}
+        />
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  welcomeText: {
-    fontSize: 24,
-    fontWeight: "bold",
-    alignSelf: "center",
-    marginTop: "10%",
-  },
   centerComponent: {
-    alignItems: "center",
-    justifyContent: "space-around",
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "stretch",
+    justifyContent: "center",
     width: "80%",
     alignSelf: "center",
-    height: "30%",
+    // height: "40%",
   },
   inputContainer: {
-    height: "40%",
-    marginTop: 30,
-    justifyContent: "space-between",
-    // backgroundColor: "white",
-    width: "100%",
     flexDirection: "column",
-    alignItems: "center",
-  },
-  inputStyle: {
-    paddingLeft: 10,
-    width: "70%",
-    borderColor: "darkgray",
-    borderBottomWidth: 1,
-    backgroundColor: "white",
-    height: 40,
+    height: "60%",
+    marginTop: 30,
+    justifyContent: "center",
   },
 });
 

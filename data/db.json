@@ -1,13 +1,13 @@
 {
   "users": [
     {
-      "name": "macius",
+      "name": "mac",
       "password": "123Mac",
       "id": 1,
-      "age": 1,
-      "gender": " female",
-      "height": 2,
-      "weight": 4
+      "age": 6,
+      "gender": "male",
+      "height": 6,
+      "weight": 9
     },
     {
       "name": "galus",
