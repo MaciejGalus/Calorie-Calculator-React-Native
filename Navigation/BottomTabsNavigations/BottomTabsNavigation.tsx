@@ -6,6 +6,7 @@ import CalorieCalculatorPage from "../../Pages/CalorieCalculatorPage/CalorieCalc
 import CalorieTablePage from "../../Pages/CalorieTablePage/CalorieTablePage";
 import UserProfilePage from "../../Pages/UserProfilePage/UserProfilePage";
 import DailyKcalMenuPage from "../../Pages/DailyKcalMenuPage/DailyKcalMenuPage";
+import FillProfilePage from "../../Pages/FillProfilePage/FillProfilePage";
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -40,7 +41,7 @@ const BottomTabsNavigation = () => {
         />
         <Tab.Screen
           name="User Profile"
-          component={UserProfilePage}
+          component={FillProfilePage}
           options={{
             tabBarIcon: () => <Icon name="account-circle-outline" size={25} />,
           }}

@@ -4,10 +4,10 @@
       "name": "mac",
       "password": "123Mac",
       "id": 1,
-      "age": 3,
-      "gender": "male",
-      "height": 3,
-      "weight": 3
+      "age": 5,
+      "gender": "female",
+      "height": 5,
+      "weight": 5
     }
   ]
 }

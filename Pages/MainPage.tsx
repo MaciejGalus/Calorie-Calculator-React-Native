@@ -20,13 +20,17 @@ const MainPage = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen
+          {/* <Stack.Screen
             options={{
+              // headerStyle: {
+              //   backgroundColor: materialPurpleColor,
+              // },
+              // headerTintColor: "white",
               headerShown: false,
             }}
             name={Routes.FillYourProfile}
             component={FillProfilePage}
-          />
+          /> */}
           <Stack.Screen
             options={{
               // headerStyle: {

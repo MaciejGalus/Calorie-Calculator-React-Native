@@ -8,10 +8,10 @@ import SelectDropdown from "react-native-select-dropdown";
 
 const CalorieCalculatorPage = () => {
   const [gender, setGender] = useState<string | "">("");
-  const [age, setAge] = useState<number | "">("");
-  const [height, setHeight] = useState<number | "">("");
-  const [weight, setWeight] = useState<number | "">("");
-  const [activity, setActivity] = useState<number | "">("");
+  const [age, setAge] = useState<string>("");
+  const [height, setHeight] = useState<string>("");
+  const [weight, setWeight] = useState<string>("");
+  const [activity, setActivity] = useState<string>("");
   const [goal, setGoal] = useState<WeightTarget | "">("");
   const [myKcal, setMyKcal] = useState<number | "" | undefined>("");
 
@@ -23,7 +23,66 @@ const CalorieCalculatorPage = () => {
     { level: 1.9, description: "1.9 - Very active + physical work" },
   ];
 
-  const actibityGoals = ["Gain Weight", "Loose Weight", "Keep Weight"];
+  const cleanForm = () => {
+    setAge("");
+    setHeight("");
+    setWeight("");
+    setGender("");
+    setMyKcal("");
+    setActivity("");
+    setGoal("");
+  };
+
+  const toggleButtonDisabled = (): boolean => {
+    if (
+      age === "" ||
+      height === "" ||
+      weight === "" ||
+      activity === "" ||
+      goal === ""
+    ) {
+      return true;
+    } else return false;
+  };
+
+  const handleSubmitButton = () => {
+    if (myKcal) {
+      setMyKcal("");
+      cleanForm();
+    } else {
+      setMyKcal(displayOutcome());
+    }
+  };
+
+  const displayOutcome = (): number | undefined => {
+    const maleBMR = 10 * +weight + 6.25 * +height - 5 * +age + 5;
+    const femaleBMR = 10 * +weight + 6.25 * +height - 5 * +age - 161;
+    const maleDailyTargetKcal = maleBMR * +activity;
+    const femaleDailyTargetKcal = femaleBMR * +activity;
+    if (gender === "male") {
+      if (goal === WeightTarget.Keep) {
+        return maleDailyTargetKcal;
+      } else if (goal === WeightTarget.Lose) {
+        return maleDailyTargetKcal - 500;
+      } else if (goal === WeightTarget.Gain) {
+        return maleDailyTargetKcal + 500;
+      }
+    } else if (gender === "female") {
+      if (goal === WeightTarget.Keep) {
+        return femaleDailyTargetKcal;
+      } else if (goal === WeightTarget.Lose) {
+        return femaleDailyTargetKcal - 500;
+      } else if (goal === WeightTarget.Gain) {
+        return femaleDailyTargetKcal + 500;
+      }
+    }
+  };
+
+  const actibityGoals = [
+    WeightTarget.Gain,
+    WeightTarget.Lose,
+    WeightTarget.Keep,
+  ];
 
   return (
     <View style={styles.centerComponent}>
@@ -35,7 +94,6 @@ const CalorieCalculatorPage = () => {
           style={{
             flexDirection: "row",
             width: "90%",
-            // justifyContent: "space-around",
             alignSelf: "center",
             marginBottom: 25,
           }}
@@ -54,29 +112,29 @@ const CalorieCalculatorPage = () => {
         <TextInput
           placeholder="Age"
           keyboardType="numeric"
-          value=""
+          value={age}
           variant="outlined"
-          onChangeText={() => {}}
+          onChangeText={(text) => setAge(text)}
         />
         <TextInput
           placeholder="Height(cm)"
           keyboardType="numeric"
-          value=""
+          value={height}
           variant="outlined"
-          onChangeText={() => {}}
+          onChangeText={(text) => setHeight(text)}
         />
         <TextInput
           placeholder="Weight"
           keyboardType="numeric"
-          value=""
+          value={weight}
           variant="outlined"
-          onChangeText={() => {}}
+          onChangeText={(text) => setWeight(text)}
         />
 
         <SelectDropdown
           defaultButtonText="Select activity level"
           data={activityLevels.map((data) => data.description)}
-          onSelect={(item) => console.log(item.slice(0, 4))}
+          onSelect={(item) => setActivity(item.slice(0, 4))}
           buttonStyle={{
             backgroundColor: "white",
             width: "100%",
@@ -91,7 +149,7 @@ const CalorieCalculatorPage = () => {
         <SelectDropdown
           defaultButtonText="What do you want ?"
           data={actibityGoals}
-          onSelect={() => {}}
+          onSelect={(item) => setGoal(item)}
           buttonStyle={{
             marginVertical: 4,
             marginBottom: 30,
@@ -105,8 +163,17 @@ const CalorieCalculatorPage = () => {
             color: "gray",
           }}
         />
+        {myKcal && (
+          <Text>
+            Eat {Math.floor(myKcal)} kcal daily if you want to {goal}
+          </Text>
+        )}
         <View style={{ width: "30%", alignSelf: "center" }}>
-          <Button title="Count" onPress={() => {}} />
+          <Button
+            title={myKcal ? "Clean" : "Count"}
+            onPress={handleSubmitButton}
+            disabled={toggleButtonDisabled()}
+          />
         </View>
       </View>
     </View>
