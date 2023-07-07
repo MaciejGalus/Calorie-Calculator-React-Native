@@ -1,13 +1,3 @@
 {
-  "users": [
-    {
-      "name": "mac",
-      "password": "123Mac",
-      "id": 1,
-      "age": 5,
-      "gender": "female",
-      "height": 5,
-      "weight": 5
-    }
-  ]
+  "users": []
 }
