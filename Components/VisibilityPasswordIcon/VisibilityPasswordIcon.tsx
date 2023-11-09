@@ -15,9 +15,9 @@ const VisibilityPasswordIcon: React.FC<VisibilityIconProps> = ({
   return (
     <TouchableOpacity onPress={onPressToggler} disabled={isDisabled}>
       {hidePassword ? (
-        <Icon name="eye-with-line" size={40} color="darkgray" />
+        <Icon name="eye-with-line" size={30} color="darkgray" />
       ) : (
-        <Icon name="eye" size={40} color="darkgray" />
+        <Icon name="eye" size={30} color="darkgray" />
       )}
     </TouchableOpacity>
   );

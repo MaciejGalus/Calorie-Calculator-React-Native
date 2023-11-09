@@ -220,8 +220,9 @@ const DailyKcalMenuPage = () => {
         </Flex>
         <Flex
           direction="row"
-          justify="end"
-          style={{ marginBottom: 15, marginRight: 15 }}
+          justify="between"
+          self="end"
+          style={{ marginBottom: 15, marginRight: 15, width: 150 }}
         >
           <Button
             title={editTryb ? "Confirm" : "Add"}

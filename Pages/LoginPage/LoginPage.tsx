@@ -13,6 +13,7 @@ import { Button, Text, TextInput } from "@react-native-material/core";
 import { styles } from "../../styles";
 
 function LoginPage({ navigation }: any) {
+  //zrobic reducer
   const { setUser, user, setIsLogged } = useContext(UserContext);
   const { getAllUsers, registerUser } = useFetch();
   const [myName, setMyName] = useState<string>("");

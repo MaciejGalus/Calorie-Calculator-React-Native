@@ -1,4 +1,5 @@
-export const DBSERVER = "http://192.168.33.2:5000/";
+// przy expo musi byc podany konkretny host na którym odpalone jest aktualnie expo
+export const DBSERVER = "http://192.168.33.4:5000/";
 export const passwordValidation = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{5,}$/;
 export const emptyPassword = "Password can't be empty";
 export const emptyName = "Name can't be empty ";
